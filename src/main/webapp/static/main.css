@@ -1,0 +1,9 @@
+h1 {
+    background: #D9FFAD; /* Цвет фона под заголовком */
+    color: darkblue; /* Цвет текста */
+    padding: 2px; /* Поля вокруг текста */
+    align-content: center;
+}
+button {
+    align-content: center;
+}
