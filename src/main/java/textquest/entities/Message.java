@@ -1,4 +1,4 @@
-package main.com.javarush.textquest.enteties;
+package textquest.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

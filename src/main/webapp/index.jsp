@@ -4,15 +4,15 @@
     <title>SPACE QUEST</title>
     <style>
         h1 {
-            background: darkblue; /* Цвет фона под заголовком */
-            color: goldenrod; /* Цвет текста */
-            padding: 2px; /* Поля вокруг текста */
-            text-align:  center;
-        }
-        div {
-            text-align:  center;
+            background: darkblue;
+            color: goldenrod;
+            padding: 2px;
+            text-align: center;
         }
 
+        div {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -26,15 +26,14 @@
 <div>
     <form method="post" action="/quest">
         <label>Name:
-            <input type="text" name="name"><br />
+            <input type="text" name="name"><br/>
         </label>
-        <input type="submit" value="Start"><br />
+        <input type="submit" value="Start"><br/>
     </form>
 </div>
 
 <div>
-    <img src=${pageContext.request.contextPath}"/images/startpicture.jpeg"  alt="Start picture"/>
+    <img src=${pageContext.request.contextPath}"/images/startpicture.jpeg" alt="Start picture"/>
 </div>
 </body>
-
 </html>

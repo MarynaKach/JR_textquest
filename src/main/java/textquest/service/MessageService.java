@@ -1,18 +1,19 @@
-package main.com.javarush.textquest.service;
+package textquest.service;
 
-import main.com.javarush.textquest.enteties.Answer;
-import main.com.javarush.textquest.enteties.Message;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import textquest.entities.Answer;
+import textquest.entities.Message;
+
 import java.util.Set;
 
 public class MessageService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageService.class);
+    private static final Logger LOGGER = Logger.getLogger(MessageService.class);
 
     public String getLink(String answer, int id, StoryBuilder storyBuilder) {
-        String hidden;
+        if (answer == null || id < 0 || storyBuilder == null) {
+            throw new IllegalArgumentException("Answer can't be null.");
+        }
         int nextIdYes;
         int nextIdNo;
         String link;
@@ -22,7 +23,7 @@ public class MessageService {
             } else {
                 link = "/quest?messageId=5";
             }
-        }else {
+        } else {
             if (answer.equalsIgnoreCase("yes")) {
                 nextIdYes = getNextId(id, "yes", storyBuilder);
                 link = "/quest?messageId=" + nextIdYes;
@@ -31,13 +32,15 @@ public class MessageService {
                 link = "/quest?messageId=" + nextIdNo;
             }
         }
-        LOGGER.info("Link for " + answer + " bottom has benn built");
+        LOGGER.info("Link for " + answer + " button has been built");
         return link;
     }
 
-    public int getPictureById(int id, StoryBuilder storyBuilder) {
+    public int getIdOfPicture(int id, StoryBuilder storyBuilder) {
         int pictureId = 0;
-        Message currentMessage;
+        if (storyBuilder == null) {
+            throw new IllegalArgumentException("Story is null.");
+        }
         for (Message message : storyBuilder.getMessages()) {
             if (message.getId() == id) {
                 pictureId = message.getPictureId();
@@ -46,13 +49,11 @@ public class MessageService {
         return pictureId;
     }
 
-    public int getMessageId(HttpServletRequest request) {
-        int messageId = Integer.parseInt(request.getParameter("messageId"));
-        //boolean isNumeric = message.chars().allMatch(Character::isDigit);
-        return messageId; /*isNumeric ? Integer.parseInt(message) : 0;*/
-    }
     public String getMessageById(int id, StoryBuilder storyBuilder) {
         String textMessage = null;
+        if (storyBuilder == null) {
+            throw new IllegalArgumentException("Story is null.");
+        }
         for (Message message : storyBuilder.getMessages()) {
             if (message.getId() == id) {
                 textMessage = message.getTextMessage();
@@ -61,10 +62,14 @@ public class MessageService {
         LOGGER.info("The message with " + id + " id has been returned");
         return textMessage;
     }
-    public int getNextId (int id, String textAnswer, StoryBuilder storyBuilder) {
+
+    public int getNextId(int id, String textAnswer, StoryBuilder storyBuilder) {
+        if (storyBuilder == null || textAnswer == null) {
+            throw new IllegalArgumentException("Story is null.");
+        }
         Message message = null;
         for (Message message1 : storyBuilder.getMessages()) {
-            if(message1.getId() == id) {
+            if (message1.getId() == id) {
                 message = message1;
             }
         }
@@ -74,7 +79,7 @@ public class MessageService {
         if (set == null) {
             nextId = 0;
         } else {
-            for (Answer answer1 : set/*message.getSet()*/) {
+            for (Answer answer1 : set) {
                 if (textAnswer.equalsIgnoreCase(answer1.getAnswerText())) {
                     answer = answer1;
                 }
@@ -83,10 +88,5 @@ public class MessageService {
         }
         LOGGER.info("The id for the next message " + id + " was returned");
         return nextId;
-    }
-
-    public String getNameFromRequest(HttpServletRequest req) {
-        String name = req.getParameter("name");
-        return name;
     }
 }
